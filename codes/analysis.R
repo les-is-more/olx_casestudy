@@ -28,7 +28,7 @@ dbWriteTable(conn,'multAcc',data.multAcc)
 qry = "Select * from temptbl1"
 rsl = dbSendQuery(conn, qry)
 temp = dbFetch(rsl,n=-1)
-?sapply
+
 
 
 
