@@ -1,5 +1,3 @@
-
-
 #+ include=F
 library(dplyr)
 library(xlsx)
@@ -10,7 +8,6 @@ data.contacts = read.csv('_docs/contacts.csv', header=TRUE)
 data.pay = read.csv('_docs/payments.csv', header=TRUE)
 data.multAcc = read.csv('_docs/multiple-accounts.csv', header=TRUE)
 
-
 #' The below code creates the connection to our MySQL database.
 conn = dbConnect(RMySQL::MySQL(), 
                  host = 'localhost',
@@ -19,7 +16,6 @@ conn = dbConnect(RMySQL::MySQL(),
                  dbname = "olx")
 
 #+ include=F
-
 dbWriteTable(conn,'b2c',data.b2c)
 dbWriteTable(conn,'contacts',data.contacts)
 dbWriteTable(conn,'pay',data.pay)
@@ -28,7 +24,3 @@ dbWriteTable(conn,'multAcc',data.multAcc)
 qry = "Select * from temptbl1"
 rsl = dbSendQuery(conn, qry)
 temp = dbFetch(rsl,n=-1)
-
-
-
-
