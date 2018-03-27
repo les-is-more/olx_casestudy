@@ -1,26 +1,40 @@
-#+ include=F
-library(dplyr)
-library(xlsx)
-library(RMySQL)
-setwd('D:/Sandbox/OLX_CaseStudy')
-data.b2c = read.csv('_docs/b2c.csv', header=TRUE)
-data.contacts = read.csv('_docs/contacts.csv', header=TRUE)
-data.pay = read.csv('_docs/payments.csv', header=TRUE)
-data.multAcc = read.csv('_docs/multiple-accounts.csv', header=TRUE)
+#' ---
+#' title: "OLX Case Study"
+#' author: "Lester Cajegas"
+#' date: "March 20, 2018"
+#' output: 
+#'   pdf_document:
+#'   latex_engine: pdflatex
+#' fig_caption: yes
+#' ---
+  
+#' ###OLX Case Study
+#' This document presents the analysis made and insights gathered for the sample data
+#' given by OLX as part of its hiring process.
+#' 
+#' We will breakdown the output by question for easier understanding.
+#' 
 
-#' The below code creates the connection to our MySQL database.
-conn = dbConnect(RMySQL::MySQL(), 
-                 host = 'localhost',
-                 user='root', 
-                 password='Diapox1990',
-                 dbname = "olx")
+#' Show how we can prioritize which users should the Sales team approach first.
+#'    * Using MS Excel Formulas (bottom-up approach)
+#'     * Using VBA or pseudocode (bottom-up approach) to write the classification inside MS Excel
+#' Show how we can bucket the classification of users based on the business they bring to OLX.
+#' 
 
-#+ include=F
-dbWriteTable(conn,'b2c',data.b2c)
-dbWriteTable(conn,'contacts',data.contacts)
-dbWriteTable(conn,'pay',data.pay)
-dbWriteTable(conn,'multAcc',data.multAcc)
+#+ echo=F, fig.cap = "Simulation of k-mean centers, compared through plots"
 
-qry = "Select * from temptbl1"
-rsl = dbSendQuery(conn, qry)
-temp = dbFetch(rsl,n=-1)
+kmeansSim = function (k, data){
+  v= c()
+  for (i in 1:k ) {
+    rslt = kmeans(data,i)
+    v = rbind(v,c(i,rslt$betweenss / rslt$totss))
+  }
+  plot(v, type='l', xlab='Number of K or Centers', ylab='% Sum of Squares Explained')
+}
+
+par(mar=c(4,4,3,3))
+par(mfrow=c(1,4))
+kmeansSim(10,temptbl[1:3])
+kmeansSim(10,temptbl[1:4])
+kmeansSim(10,temptbl[1:5])
+kmeansSim(10,temptbl[1:6])
